@@ -26,7 +26,8 @@ setup(
     ],
     install_requires=[
         'click',
-        'bibtexparser'
+        'bibtexparser',
+        'watchdog'
     ],
     entry_points={
         'console_scripts': [
