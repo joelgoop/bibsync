@@ -14,6 +14,12 @@ DEFAULT_STRIP_FIELDS = [
     'mendeley-.*'
 ]
 
+def entries_to_dict(entries):
+    entries_dict = {}
+    for entry in entries:
+        entries_dict[entry['ID']] = entry
+    return entries_dict
+
 def merge(src, dest, strip_fields=DEFAULT_STRIP_FIELDS):
     # Configure parser to not change 'url' to 'link'
     logger.info("(Re)constructing '{}' from {} sources.".format(dest, len(src)))
@@ -47,8 +53,13 @@ def merge(src, dest, strip_fields=DEFAULT_STRIP_FIELDS):
                         if m is not None]
             for key in keys:
                 del entry[key]
+        source_entries_dict = entries_to_dict(source_bib.entries)
+        logger.debug("Found {} entries in {}.".format(
+            len(source_entries_dict), fn))
 
-        parsed_source.update(source_bib.entries_dict)
+        parsed_source.update(source_entries_dict)
+
+    logger.debug("Sources contain {} unique entries.".format(len(parsed_source)))
 
     # Construct dictionary of dest entries if available
     try:
@@ -57,12 +68,14 @@ def merge(src, dest, strip_fields=DEFAULT_STRIP_FIELDS):
     except FileNotFoundError:
         dest_bib = {}
 
+
     # Update dest, but keep fields that only exist in dest
     for k, v in parsed_source.items():
         tmp = dest_bib.get(k, {})
         tmp.update(v)
         dest_bib[k] = tmp
 
+    logger.debug("Writing {} entries to file.".format(len(dest_bib)))
     write_dict_to_file(dest_bib, dest, writer=writer)
 
 

@@ -9,7 +9,7 @@ class BibSourceHandler(PatternMatchingEventHandler):
     
     def __init__(self, src, func):
         super().__init__(patterns=src, ignore_directories=True)
-        logger.debug("Initializing handler with patterns '{}'".format(self.patterns))
+        logger.debug("Initializing handler with patterns: {}".format(', '.join(self.patterns)))
         self.func = func
 
     def on_modified(self, event):
@@ -18,7 +18,7 @@ class BibSourceHandler(PatternMatchingEventHandler):
         self.func(event)
 
 def watch(watch_paths, callback):
-    logger.debug("Watch paths {}".format(watch_paths))
+    logger.debug("Watch paths: {}".format(', '.join(watch_paths.keys())))
 
     observer = Observer()
     for path, files in watch_paths.items():
