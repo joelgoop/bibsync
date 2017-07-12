@@ -11,7 +11,7 @@ from setuptools import setup
 
 setup(
     name='bibsync',
-    version='0.2.0',
+    version='0.3.0',
     description='Merge bibtex .bib files',
     author='Joel Goop',
     author_email='joel@goop.nu',

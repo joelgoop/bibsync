@@ -9,7 +9,8 @@ class BibSourceHandler(PatternMatchingEventHandler):
     
     def __init__(self, src, func):
         super().__init__(patterns=src, ignore_directories=True)
-        logger.debug("Initializing handler with patterns: {}".format(', '.join(self.patterns)))
+        logger.debug("Initializing handler with patterns: {}".format(
+            ', '.join(self.patterns)))
         self.func = func
 
     def on_modified(self, event):
